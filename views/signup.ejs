@@ -1,5 +1,30 @@
 <%- include('partials/header') %>
 
-<h1>SignUp Form</h1>
+<form>
+    <h2>Sign Up</h2>
+
+    <label for="email">Email: </label>
+    <input type="text" name="email" required/>
+    <div class="error email"></div>
+    
+    <label for="password">Password: </label>
+    <input type="password" name="password" required/>
+    <div class="error password"></div>
+
+    <button>Sign Up</button>
+</form>
+
+<script>
+    const form = document.querySelector('form');
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const email = form.email.value;
+        const password = form.password.value;
+
+        console.log(email, password);
+    });
+</script>
 
 <%- include('partials/footer') %>
