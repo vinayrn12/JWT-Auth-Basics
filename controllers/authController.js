@@ -4,6 +4,16 @@ const jwt = require('jsonwebtoken');
 const handleErrors = (err) => {
     let errors = { email: '', password: ''};
 
+    //Check for incorrect mail(login phase)
+    if(err.message === 'Incorrect email'){
+        errors.email = 'This email is not registered';
+    }
+
+    //Check for incorrect password(login phase)
+    if(err.message === 'Incorrect password'){
+        errors.password = 'The password is incorrect';
+    }
+
     //Email duplication check
     if(err.code === 11000){
         errors.email = 'This email is already registered'
@@ -53,6 +63,15 @@ module.exports.signup_post = async (req, res) => {
     }
 };
 
-module.exports.login_post = (req, res) => {
-    res.send('logged in');
+module.exports.login_post = async (req, res) => {
+    const { email, password } = req.body;
+
+    try{
+        const user = await User.login(email, password);
+        res.status(200).json({ user: user._id });
+    }
+    catch(err){
+        const errors = handleErrors(err);
+        res.status(400).json({ errors });
+    }
 };
